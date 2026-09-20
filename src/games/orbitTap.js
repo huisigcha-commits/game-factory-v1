@@ -1,0 +1,10 @@
+export function mountGame({ container, sdk, onScore }) {
+  const canvas = document.createElement('canvas'); canvas.width = canvas.height = 720; canvas.className = 'game-canvas'; container.replaceChildren(canvas);
+  const ctx = canvas.getContext('2d'); let running = false, frame = 0, score = 0, angle = 0, target = Math.PI * 1.5, speed = 1.2, started = 0;
+  const draw = () => { const c = 360, r = 230; ctx.fillStyle = '#141b31'; ctx.fillRect(0,0,720,720); ctx.beginPath();ctx.arc(c,c,r,0,Math.PI*2);ctx.strokeStyle='#344266';ctx.lineWidth=15;ctx.stroke();ctx.beginPath();ctx.arc(c,c,r,target-.19,target+.19);ctx.strokeStyle='#d8ff48';ctx.lineWidth=20;ctx.stroke();ctx.beginPath();ctx.arc(c+Math.cos(angle)*r,c+Math.sin(angle)*r,22,0,Math.PI*2);ctx.fillStyle='#ff9974';ctx.fill();ctx.fillStyle='#eef0f7';ctx.textAlign='center';ctx.font='700 32px system-ui';ctx.fillText(running?'TAP ON THE LIME ZONE':'PRESS PLAY TO BEGIN',c,c-15);ctx.fillStyle='#9da5bc';ctx.font='24px system-ui';ctx.fillText(running?`${Math.max(0,Math.ceil(30-(performance.now()-started)/1000))} seconds left`:'Hit the moving orbit at the right time.',c,c+35); };
+  const loop = (time) => { if(!running)return; angle=(angle+speed/60)%(Math.PI*2);if(time-started>=30000){running=false;sdk.event('game_over',{score});draw();return;}draw();frame=requestAnimationFrame(loop); };
+  const restart = () => { cancelAnimationFrame(frame);score=0;angle=0;target=Math.PI*1.5;speed=1.2;onScore(0);draw(); };
+  const start = () => { restart();running=true;started=performance.now();sdk.rememberPlay();sdk.event('game_start');frame=requestAnimationFrame(loop); };
+  const tap = () => { if(!running)return;sdk.firstAction();const delta=Math.abs(Math.atan2(Math.sin(angle-target),Math.cos(angle-target)));if(delta<=.21){score++;speed+=.12;target=Math.random()*Math.PI*2;onScore(score);sdk.event('game_score',{score});}else{running=false;cancelAnimationFrame(frame);sdk.event('game_over',{score});}draw(); };
+  canvas.addEventListener('pointerdown',tap);draw();return {start,restart,destroy(){running=false;cancelAnimationFrame(frame);canvas.removeEventListener('pointerdown',tap);}};
+}
