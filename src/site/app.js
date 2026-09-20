@@ -18,7 +18,7 @@ function gameCard(game) {
 }
 
 function visibleGames() {
-  return gameRegistry.filter((game) => (selectedCategory === 'all' || game.category === selectedCategory)
+  return gameRegistry.filter((game) => game.status !== 'planned' && (selectedCategory === 'all' || game.category === selectedCategory)
     && `${game.title} ${game.shortDescription} ${game.tags.join(' ')}`.toLowerCase().includes(query.toLowerCase()));
 }
 
@@ -31,7 +31,7 @@ function render() {
       <a class="primary-action" href="#games">게임 둘러보기 <span>↓</span></a></div>
     <aside class="hero-panel"><p>NEXT UP</p><strong>${featured[0].title}</strong><span>${featured[0].averagePlayTime}</span><a href="games/${featured[0].slug}/">Play prototype →</a></aside>
   </section>
-  <section id="new" class="feature-section"><div class="section-heading"><div><p class="eyebrow">START HERE</p><h2>대표 게임 5종</h2></div><p>서로 다른 입력과 게임 규칙을 검증하는 첫 Factory 라인업입니다.</p></div>
+  <section id="new" class="feature-section"><div class="section-heading"><div><p class="eyebrow">START HERE</p><h2>대표 게임 5종</h2></div><p>전체 30개 Registry 중 서로 다른 입력과 게임 규칙을 검증하는 첫 Factory 라인업입니다.</p></div>
     <div class="featured-grid">${featured.map(gameCard).join('')}</div></section>
   <aside class="safe-ad-zone" aria-label="광고 영역"><span>SAFE AD ZONE</span><p>게임 조작과 분리된 광고 영역</p></aside>
   <section id="games" class="catalog-section"><div class="section-heading"><div><p class="eyebrow">GAME CATALOG</p><h2>무엇을 플레이할까요?</h2></div><label class="search"><span>⌕</span><input id="game-search" type="search" placeholder="게임 찾기" value="${query}" /></label></div>
@@ -52,4 +52,3 @@ function bindEvents() {
 }
 
 render();
-

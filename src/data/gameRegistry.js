@@ -8,7 +8,7 @@ const shared = {
   updatedDate: '2026-09-20',
 };
 
-export const gameRegistry = Object.freeze([
+const representativeGames = [
   {
     ...shared,
     id: 'G01', slug: 'orbit-tap', title: 'Orbit Tap', category: 'skill',
@@ -64,7 +64,18 @@ export const gameRegistry = Object.freeze([
     seoTitle: 'Memory Grid | GAME FACTORY', seoDescription: '빛의 순서를 기억하는 무료 두뇌 웹게임.',
     relatedGames: ['orbit-tap', 'number-fold'], featured: true, status: 'prototype',
   },
-]);
+];
+
+const plannedGames = [
+  ['G02','perfect-drop','Perfect Drop','skill'],['G03','gap-runner','Gap Runner','skill'],['G04','balance-tower','Balance Tower','skill'],['G05','pulse-stop','Pulse Stop','skill'],
+  ['G07','hex-link','Hex Link','puzzle'],['G08','pipe-shift','Pipe Shift','puzzle'],['G09','laser-mirror','Laser Mirror','puzzle'],['G10','escape-grid','Escape Grid','puzzle'],
+  ['G12','gem-chain','Gem Chain','merge'],['G13','number-stack','Number Stack','merge'],['G14','color-collapse','Color Collapse','merge'],['G15','shape-fusion','Shape Fusion','merge'],
+  ['G17','brick-burst','Brick Burst','arcade'],['G18','sky-hopper','Sky Hopper','arcade'],['G19','space-drift','Space Drift','arcade'],['G20','tunnel-shift','Tunnel Shift','arcade'],
+  ['G21','tiny-mine','Tiny Mine','idle'],['G22','mini-factory','Mini Factory','idle'],['G23','planet-grow','Planet Grow','idle'],['G24','pocket-farm','Pocket Farm','idle'],['G25','energy-lab','Energy Lab','idle'],
+  ['G27','word-sprint','Word Sprint','brain'],['G28','math-rush','Math Rush','brain'],['G29','pattern-next','Pattern Next','brain'],['G30','sequence-recall','Sequence Recall','brain'],
+].map(([id,slug,title,category]) => ({...shared,id,slug,title,category,status:'planned',featured:false,shortDescription:`${title}은(는) GAME FACTORY의 다음 제작 라인업입니다.`,description:'공통 Game SDK와 품질 기준을 통과한 뒤 공개할 예정인 게임입니다.',tags:[category],engineType:'pending',desktopControls:[],mobileControls:[],orientation:'pending',difficulty:'pending',averagePlayTime:'pending',thumbnail:null,heroImage:null,seoTitle:`${title} | GAME FACTORY`,seoDescription:`${title} 무료 웹게임 준비 중.`,relatedGames:[]}));
+
+export const gameRegistry = Object.freeze([...representativeGames,...plannedGames]);
 
 export const publicGames = () => gameRegistry.filter((game) => game.status === 'published');
 export const gameBySlug = (slug) => gameRegistry.find((game) => game.slug === slug);
