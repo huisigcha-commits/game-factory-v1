@@ -2,7 +2,7 @@ import { gameRegistry } from '../data/gameRegistry.js';
 import { categories } from '../data/categories.js';
 import { playerStore } from '../core/storage.js';
 
-const root = document.querySelector('#listing');
+const root = document.querySelector('#main');
 const view = document.body.dataset.view;
 const category = document.body.dataset.category;
 const playable = gameRegistry.filter((game) => game.status !== 'planned');

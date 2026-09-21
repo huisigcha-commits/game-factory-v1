@@ -8,6 +8,7 @@
     "validate:registry": "node scripts/validate-registry.mjs",
     "qa": "node scripts/qa.mjs",
     "generate:seo": "node scripts/generate-seo.mjs",
-    "generate:games": "node scripts/generate-game-pages.mjs"
+    "generate:games": "node scripts/generate-game-pages.mjs",
+    "generate:pages": "node scripts/generate-site-pages.mjs"
   }
 }

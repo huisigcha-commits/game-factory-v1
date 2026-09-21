@@ -22,6 +22,6 @@ const pages = {
 };
 
 const page = pages[document.body.dataset.page];
-const root = document.querySelector('#static-page');
+const root = document.querySelector('#main');
 document.title = `${page.title} | GAME FACTORY`;
 root.innerHTML = `<article class="static-page"><a class="back-link" href="/">← Home</a><p class="eyebrow">GAME FACTORY · PRE-LAUNCH</p><h1>${page.title}</h1><p class="static-intro">${page.intro}</p>${page.sections.map(([heading, body]) => `<section><h2>${heading}</h2><p>${body}</p></section>`).join('')}<p class="page-note">Last updated: 2026-09-21 · 정식 공개 전 초안</p></article>`;
