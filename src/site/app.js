@@ -37,7 +37,7 @@ function render() {
   main.innerHTML = `<section class="hero">
     <div><p class="eyebrow hero-label">BROWSER GAMES · NO INSTALL</p><h1>Play now.<br><em>Stay curious.</em></h1>
       <p class="hero-copy">짧은 한 판부터 오래 파고드는 기록 도전까지. 설치 없이, 바로 시작하세요.</p>
-      <div class="hero-actions"><a class="primary-action" href="#games">게임 둘러보기 <span aria-hidden="true">↓</span></a><a class="text-action" href="games/">전체 게임 보기</a></div>
+      <div class="hero-actions"><a class="primary-action" href="#games">게임 둘러보기 <span aria-hidden="true">↓</span></a><button class="random-action" type="button" data-random-game>랜덤 게임 <span aria-hidden="true">↗</span></button><a class="text-action" href="games/">전체 게임 보기</a></div>
       <dl class="hero-stats"><div><dt>${playableGames.length}</dt><dd>PLAYABLE GAMES</dd></div><div><dt>${categories.length}</dt><dd>CATEGORIES</dd></div><div><dt>0</dt><dd>INSTALLS NEEDED</dd></div></dl>
     </div>
     <aside class="hero-panel"><p>NEXT UP</p><strong>${featured[0].title}</strong><span>${featured[0].averagePlayTime} · ${featured[0].difficulty}</span><a href="games/${featured[0].slug}/">Play now →</a></aside>
@@ -61,6 +61,11 @@ function bindEvents() {
     const active = playerStore.toggleFavorite(game.id); track('favorite_add', { game_id: game.id, active }); render();
   }));
   document.querySelectorAll('[data-game-open]').forEach((link) => link.addEventListener('click', () => track('game_view', { game_slug: link.dataset.gameOpen })));
+  document.querySelector('[data-random-game]')?.addEventListener('click', () => {
+    const game = playableGames[Math.floor(Math.random() * playableGames.length)];
+    track('random_game_open', { game_id: game.id, game_slug: game.slug });
+    window.location.assign(`games/${game.slug}/`);
+  });
 }
 
 render();
