@@ -41,3 +41,11 @@ test('the generated sitemap includes discovery and trust routes', () => {
   for (const category of categories) assert.match(sitemap, new RegExp(`/category/${category.id}/`));
   assert.equal((sitemap.match(/<url>/g) || []).length, 45);
 });
+
+test('category pages use their two-level asset paths', () => {
+  for (const category of categories) {
+    const page = readFileSync(`${root}category/${category.id}/index.html`, 'utf8');
+    assert.match(page, /\.\.\/\.\.\/src\/site\/styles\.css/);
+    assert.match(page, /\.\.\/\.\.\/src\/site\/listPage\.js/);
+  }
+});
