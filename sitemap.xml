@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://YOUR-DOMAIN.example/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/games/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/new/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/popular/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/favorites/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/category/skill/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/category/puzzle/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/category/merge/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/category/arcade/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/category/idle/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/category/brain/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/about/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/contact/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/privacy/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/terms/</loc></url>
   <url><loc>https://YOUR-DOMAIN.example/games/orbit-tap/</loc></url>
   <url><loc>https://YOUR-DOMAIN.example/games/number-fold/</loc></url>
   <url><loc>https://YOUR-DOMAIN.example/games/merge-garden/</loc></url>

@@ -33,3 +33,11 @@ test('lookup works for every registered slug and rejects unknown games', () => {
   for (const game of gameRegistry) assert.equal(gameBySlug(game.slug)?.id, game.id);
   assert.equal(gameBySlug('not-a-game'), undefined);
 });
+
+test('the generated sitemap includes discovery and trust routes', () => {
+  const sitemap = readFileSync(`${root}sitemap.xml`, 'utf8');
+  const expectedPaths = ['/', '/games/', '/new/', '/popular/', '/favorites/', '/about/', '/contact/', '/privacy/', '/terms/'];
+  for (const path of expectedPaths) assert.match(sitemap, new RegExp(`<loc>https://YOUR-DOMAIN\\.example${path}`));
+  for (const category of categories) assert.match(sitemap, new RegExp(`/category/${category.id}/`));
+  assert.equal((sitemap.match(/<url>/g) || []).length, 45);
+});
