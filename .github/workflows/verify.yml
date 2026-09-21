@@ -1,0 +1,28 @@
+name: Verify GAME FACTORY
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Regenerate static pages and SEO files
+        run: |
+          node scripts/generate-site-pages.mjs
+          node scripts/generate-game-pages.mjs
+          node scripts/generate-seo.mjs
+          git diff --exit-code
+      - name: Run tests and quality checks
+        run: |
+          node --test
+          node scripts/validate-registry.mjs
+          node scripts/qa.mjs
