@@ -3,7 +3,7 @@ import { gameRegistry } from '../src/data/gameRegistry.js';
 import { siteConfig } from '../src/data/siteConfig.js';
 
 const root = new URL('../games/', import.meta.url);
-const baseUrl = siteConfig.siteUrl.replace(/\/$/, '');
+const baseUrl = (process.env.GAME_FACTORY_SITE_URL || siteConfig.siteUrl).replace(/\/$/, '');
 for (const game of gameRegistry.filter((item) => item.status === 'prototype' || item.status === 'published')) {
   const directory = new URL(`${game.slug}/`, root);
   mkdirSync(directory, { recursive: true });

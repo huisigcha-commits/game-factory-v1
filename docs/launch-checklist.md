@@ -17,7 +17,7 @@
 - [ ] 운영자 명칭과 공개 가능한 문의 이메일 확정
 - [ ] 개인정보처리방침과 이용약관의 적용일 및 운영자 정보 확정
 - [ ] 모바일 브라우저에서 대표 게임·검색·즐겨찾기 최종 점검
-- [ ] 실제 도메인으로 `GAME_FACTORY_SITE_URL` 설정
+- [ ] 실제 도메인으로 빌드 환경 변수 `GAME_FACTORY_SITE_URL` 설정
 - [ ] 게임 페이지, sitemap, robots 생성 명령 재실행
 
 ## Cloudflare 연결 시점
@@ -41,8 +41,8 @@
 로컬 Node 실행 파일이 준비된 환경에서는 다음 순서로 확인합니다.
 
 ```text
-node scripts/generate-game-pages.mjs
-node scripts/generate-seo.mjs
+GAME_FACTORY_SITE_URL=https://example.com node scripts/generate-game-pages.mjs
+GAME_FACTORY_SITE_URL=https://example.com node scripts/generate-seo.mjs
 node --test
 node scripts/validate-registry.mjs
 node scripts/qa.mjs
