@@ -44,6 +44,7 @@ function render() {
   </section>
   <section id="new" class="feature-section"><div class="section-heading"><div><p class="eyebrow">START HERE</p><h2>대표 게임 5종</h2></div><p>각기 다른 조작과 규칙을 가진 게임으로 GAME FACTORY를 시작해 보세요.</p></div>
     <div class="featured-grid">${featured.map(gameCard).join('')}</div></section>
+  <section class="category-section"><div class="section-heading"><div><p class="eyebrow">PICK A MOOD</p><h2>원하는 방식으로 시작하기</h2></div><p>반응 속도, 퍼즐, 성장 게임 중 오늘의 플레이 스타일을 골라보세요.</p></div><div class="category-grid">${categories.map((category) => `<a class="category-card art-${category.id}" href="category/${category.id}/"><span>${playableGames.filter((game) => game.category === category.id).length} GAMES</span><strong>${category.label}</strong><p>${category.description}</p><b aria-hidden="true">→</b></a>`).join('')}</div></section>
   <aside class="safe-ad-zone" aria-label="광고 영역"><span>SAFE AD ZONE</span><p>게임 조작과 분리된 광고 영역</p></aside>
   ${recentSection}
   <section id="games" class="catalog-section"><div class="section-heading"><div><p class="eyebrow">GAME CATALOG</p><h2>무엇을 플레이할까요?</h2></div><label class="search"><span aria-hidden="true">⌕</span><input id="game-search" type="search" placeholder="제목·태그로 게임 찾기" value="${query}" /></label></div>
