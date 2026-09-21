@@ -17,6 +17,7 @@ export const playerStore = {
   bestScore(gameId) { return read(`best:${gameId}`, 0); },
   setBestScore(gameId, score) { const best = Math.max(this.bestScore(gameId), score); write(`best:${gameId}`, best); return best; },
   favorites() { return read('favorites', []); },
+  recent() { return read('recent', []); },
   toggleFavorite(gameId) {
     const favorites = new Set(this.favorites());
     favorites.has(gameId) ? favorites.delete(gameId) : favorites.add(gameId);

@@ -6,7 +6,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const prototypes = gameRegistry.filter((game) => game.status === 'prototype');
 const errors = [];
 if (gameRegistry.length !== 30) errors.push(`Registry must contain 30 games; found ${gameRegistry.length}.`);
-if (prototypes.length !== 5) errors.push(`Expected 5 representative prototypes; found ${prototypes.length}.`);
+if (prototypes.length !== 30) errors.push(`Expected 30 playable games; found ${prototypes.length}.`);
 for (const game of prototypes) if (!existsSync(`${root}games/${game.slug}/index.html`)) errors.push(`${game.slug}: missing game detail page.`);
 for (const page of ['games','new','popular','favorites']) if (!existsSync(`${root}${page}/index.html`)) errors.push(`${page}: missing listing page.`);
 for (const page of ['about','contact','privacy','terms']) if (!existsSync(`${root}${page}/index.html`)) errors.push(`${page}: missing trust page.`);

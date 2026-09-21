@@ -6,7 +6,7 @@ GAME FACTORY는 설치 없이 플레이하는 HTML5 웹게임 플랫폼입니다
 
 - PHASE 01 — Utiqora 구조 분석 완료
 - PHASE 02 — 확장 아키텍처 정의 완료
-- PHASE 03 — 프로젝트 뼈대 구축 진행 중
+- PHASE 03 — 초기 30개 게임 구현 및 품질 점검 진행 중
 
 ## 핵심 원칙
 
@@ -17,4 +17,6 @@ GAME FACTORY는 설치 없이 플레이하는 HTML5 웹게임 플랫폼입니다
 - 광고는 게임 조작 영역과 분리된 Safe Ad Zone에만 배치합니다.
 
 자세한 구조는 [아키텍처 문서](docs/architecture.md)를 참고하세요.
+
+공개 준비 상태와 도메인·배포·광고 전 확인 항목은 [출시 체크리스트](docs/launch-checklist.md)에서 관리합니다.
 
