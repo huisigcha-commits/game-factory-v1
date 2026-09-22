@@ -42,7 +42,7 @@ if (!game) {
     try {
       instance?.destroy();
       const file = moduleBySlug[game.slug] || 'miniGames';
-      const { mountGame } = await import(`../games/${file}.js`);
+      const { mountGame } = await import(`../games/${file}.js?v=20260923-visual1`);
       instance = mountGame({ container: document.querySelector('#game-host'), sdk, game, onScore: (value) => {
         document.querySelector('#score').textContent = value;
         document.querySelector('#best').textContent = sdk.setScore(value);
