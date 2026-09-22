@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { categories } from '../src/data/categories.js';
-import { gameRegistry, gameBySlug, publicGames } from '../src/data/gameRegistry.js';
+import { coverAssetBySlug, gameRegistry, gameBySlug, publicGames } from '../src/data/gameRegistry.js';
 import { miniGameConfigs } from '../src/games/miniGames.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -44,6 +44,14 @@ test('every shared-engine game has a valid game mode and instruction', () => {
     const [mode, instruction] = miniGameConfigs[game.slug];
     assert.ok(['timing', 'puzzle', 'merge', 'dodge', 'idle', 'quiz'].includes(mode), `${game.slug} has an unsupported mode`);
     assert.ok(instruction.length > 5, `${game.slug} needs a player instruction`);
+  }
+});
+
+test('featured games use original cover assets', () => {
+  for (const game of gameRegistry.filter((item) => item.featured)) {
+    const cover = coverAssetBySlug[game.slug];
+    assert.ok(cover, `${game.slug} needs a cover asset`);
+    assert.ok(existsSync(`${root}assets/covers/${cover}`), `${cover} is missing`);
   }
 });
 

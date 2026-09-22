@@ -1,5 +1,5 @@
 import { categories } from '../data/categories.js';
-import { gameRegistry } from '../data/gameRegistry.js';
+import { coverAssetBySlug, gameRegistry } from '../data/gameRegistry.js?v=20260922-visual1';
 import { playerStore } from '../core/storage.js';
 import { track } from '../core/analytics.js';
 
@@ -10,8 +10,9 @@ const playableGames = gameRegistry.filter((game) => game.status !== 'planned');
 
 function gameCard(game) {
   const favorite = playerStore.favorites().includes(game.id);
+  const cover = coverAssetBySlug[game.slug];
   return `<article class="game-card" data-game="${game.id}">
-    <div class="game-art art-${game.category}" aria-hidden="true"><span>${game.id}</span><small>${game.category}</small></div>
+    <div class="game-art art-${game.category}">${cover ? `<img src="/assets/covers/${cover}" alt="${game.title} 게임 장면" loading="lazy" />` : ''}<span aria-hidden="true">${game.id}</span><small>${game.category}</small></div>
     <div class="game-card-body"><p class="eyebrow">${game.category}</p><h3>${game.title}</h3><p>${game.shortDescription}</p>
       <div class="card-actions"><a class="play-link" href="games/${game.slug}/" data-game-open="${game.slug}">Play <span aria-hidden="true">→</span></a>
       <button class="favorite-button" type="button" data-favorite="${game.id}" aria-pressed="${favorite}" aria-label="${game.title} 즐겨찾기">${favorite ? '♥' : '♡'}</button></div>

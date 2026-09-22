@@ -104,6 +104,15 @@ const gameDetails = {
   'sequence-recall': ['숫자 흐름의 다음 값을 기억하고 선택하세요.', '짧은 수열을 보고 규칙을 찾아내는 집중력 게임입니다.', ['memory', 'sequence', 'brain'], 'medium', '2–5 min'],
 };
 
+export const coverAssetBySlug = Object.freeze({
+  'orbit-tap': 'orbit-tap.png',
+  'perfect-drop': 'perfect-drop.png',
+  'number-fold': 'number-fold.png',
+  'merge-garden': 'merge-garden.png',
+  'lane-dodge': 'lane-dodge.png',
+  'memory-grid': 'memory-grid.png',
+});
+
 const remainingGames = [
   ['G03','gap-runner','Gap Runner','skill'],['G04','balance-tower','Balance Tower','skill'],['G05','pulse-stop','Pulse Stop','skill'],
   ['G07','hex-link','Hex Link','puzzle'],['G08','pipe-shift','Pipe Shift','puzzle'],['G09','laser-mirror','Laser Mirror','puzzle'],['G10','escape-grid','Escape Grid','puzzle'],
