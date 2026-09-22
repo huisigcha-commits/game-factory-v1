@@ -1,4 +1,4 @@
-const configs = {
+export const miniGameConfigs = {
   'gap-runner':['timing','틈이 가운데일 때 점프'], 'balance-tower':['timing','가운데를 유지해 균형 잡기'], 'pulse-stop':['timing','빛이 초록 칸에 올 때 멈추기'],
   'hex-link':['puzzle','같은 숫자를 찾아 연결하기'], 'pipe-shift':['puzzle','목표 숫자를 찾아 배관 정렬하기'], 'laser-mirror':['puzzle','반사 경로의 목표 찾기'], 'escape-grid':['puzzle','출구 번호를 찾아 탈출하기'],
   'gem-chain':['merge','같은 보석 두 개를 합치기'], 'number-stack':['merge','같은 숫자 두 개를 쌓아 합치기'], 'color-collapse':['merge','같은 색 블록 두 개를 없애기'], 'shape-fusion':['merge','같은 도형 두 개를 융합하기'],
@@ -10,7 +10,7 @@ const configs = {
 const choice = (items) => items[Math.floor(Math.random() * items.length)];
 
 export function mountGame({ container, sdk, game, onScore }) {
-  const [type, instruction] = configs[game.slug] || ['quiz', '정답을 골라 점수를 얻기'];
+  const [type, instruction] = miniGameConfigs[game.slug] || ['quiz', '정답을 골라 점수를 얻기'];
   let score = 0, running = false, timer = 0, selected = null, resource = 0, level = 1;
   const updateScore = (value) => { score = value; onScore(score); sdk.event('game_score', { score }); };
   const shell = (content) => { container.innerHTML = `<div class="mini-game mini-${type}"><p class="mini-game-instruction">${instruction}</p>${content}</div>`; };

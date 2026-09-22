@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { categories } from '../src/data/categories.js';
 import { gameRegistry, gameBySlug, publicGames } from '../src/data/gameRegistry.js';
+import { miniGameConfigs } from '../src/games/miniGames.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 
@@ -32,6 +33,18 @@ test('every category has five playable games and game pages', () => {
 test('lookup works for every registered slug and rejects unknown games', () => {
   for (const game of gameRegistry) assert.equal(gameBySlug(game.slug)?.id, game.id);
   assert.equal(gameBySlug('not-a-game'), undefined);
+});
+
+test('every shared-engine game has a valid game mode and instruction', () => {
+  const dedicatedGames = new Set(['orbit-tap', 'perfect-drop', 'number-fold', 'merge-garden', 'lane-dodge', 'memory-grid']);
+  const sharedGames = gameRegistry.filter((game) => !dedicatedGames.has(game.slug));
+  assert.equal(sharedGames.length, 24);
+  assert.deepEqual(Object.keys(miniGameConfigs).sort(), sharedGames.map((game) => game.slug).sort());
+  for (const game of sharedGames) {
+    const [mode, instruction] = miniGameConfigs[game.slug];
+    assert.ok(['timing', 'puzzle', 'merge', 'dodge', 'idle', 'quiz'].includes(mode), `${game.slug} has an unsupported mode`);
+    assert.ok(instruction.length > 5, `${game.slug} needs a player instruction`);
+  }
 });
 
 test('the generated sitemap includes discovery and trust routes', () => {
