@@ -1,38 +1,17 @@
 export function mountGame({ container, sdk, onScore }) {
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = 720;
-  canvas.className = 'game-canvas';
-  container.replaceChildren(canvas);
-
-  const ctx = canvas.getContext('2d');
-  let frame = 0, running = false, score = 0, x = 110, direction = 1, width = 230, placed = [];
-  const speed = () => 4 + score * 0.32;
-  const nextY = () => 620 - placed.length * 44;
-  const drawBlock = (left, top, blockWidth, color) => { ctx.fillStyle = color; ctx.fillRect(left, top, blockWidth, 32); };
-  const draw = () => {
-    ctx.fillStyle = '#141b31'; ctx.fillRect(0, 0, 720, 720);
-    ctx.fillStyle = '#9da5bc'; ctx.font = '600 22px system-ui'; ctx.textAlign = 'center';
-    ctx.fillText(running ? 'CLICK OR PRESS SPACE TO DROP' : score ? 'PRESS RESTART FOR ANOTHER TOWER' : 'PRESS PLAY TO BEGIN', 360, 72);
-    drawBlock(245, 652, 230, '#344266');
-    placed.forEach((block) => drawBlock(block.x, block.y, block.width, '#d8ff48'));
-    if (running) drawBlock(x, nextY() - 82, width, '#ff9974');
-    ctx.fillStyle = '#9da5bc'; ctx.font = '20px system-ui';
-    ctx.fillText(`Tower: ${placed.length}  ·  Keep the overlap`, 360, 695);
-  };
-  const gameOver = () => { running = false; cancelAnimationFrame(frame); sdk.event('game_over', { score }); draw(); };
-  const loop = () => { if (!running) return; x += direction * speed(); if (x <= 24 || x + width >= 696) direction *= -1; draw(); frame = requestAnimationFrame(loop); };
-  const restart = () => { cancelAnimationFrame(frame); running = false; score = 0; x = 110; direction = 1; width = 230; placed = []; onScore(0); draw(); };
+  const canvas = document.createElement('canvas'); canvas.width = canvas.height = 720; canvas.className = 'game-canvas'; container.replaceChildren(canvas);
+  const ctx = canvas.getContext('2d'); const backdrop = new Image(); backdrop.src = '/assets/games/perfect-drop-sky-city.png';
+  let frame = 0, running = false, score = 0, x = 110, direction = 1, width = 230, placed = [], flash = 0;
+  const speed = () => 4 + score * .32; const nextY = () => 620 - placed.length * 44;
+  const block = (left, top, blockWidth, color) => { ctx.fillStyle = color; ctx.roundRect(left, top, blockWidth, 32, 8); ctx.fill(); ctx.fillStyle = '#ffffff55'; ctx.fillRect(left + 8, top + 5, Math.max(0, blockWidth - 16), 4); };
+  const draw = () => { if (backdrop.complete && backdrop.naturalWidth) ctx.drawImage(backdrop, 0, 0, 720, 720); else { ctx.fillStyle = '#152557'; ctx.fillRect(0, 0, 720, 720); } ctx.fillStyle = '#08152a66'; ctx.fillRect(0, 0, 720, 720);
+    ctx.fillStyle = '#07112ad9'; ctx.roundRect(24, 22, 190, 62, 16); ctx.fill(); ctx.fillStyle = '#b9d1ff'; ctx.font = '800 13px system-ui'; ctx.fillText('TOWER HEIGHT', 42, 47); ctx.fillStyle = '#fff'; ctx.font = '900 27px system-ui'; ctx.fillText(String(score).padStart(2, '0'), 42, 72);
+    ctx.fillStyle = '#172a64dd'; ctx.roundRect(222, 650, 276, 48, 14); ctx.fill(); block(245, 652, 230, '#416cc9'); placed.forEach((item, i) => block(item.x, item.y, item.width, i % 2 ? '#d8ff48' : '#ff9974')); if (running) { ctx.shadowColor = '#fff0a3'; ctx.shadowBlur = 22; block(x, nextY() - 82, width, '#ffe463'); ctx.shadowBlur = 0; }
+    ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.font = '900 28px system-ui'; ctx.fillText(running ? 'DROP WITH PERFECT TIMING' : score ? 'TOWER COMPLETE' : 'PERFECT DROP', 360, 126); ctx.fillStyle = flash ? '#d8ff48' : '#eaf1ff'; ctx.font = '800 15px system-ui'; ctx.fillText(running ? 'CLICK OR PRESS SPACE' : 'STACK THE SKYLINE, ONE PERFECT DROP AT A TIME', 360, 154); ctx.textAlign = 'left'; };
+  backdrop.onload = () => draw(); const gameOver = () => { running = false; cancelAnimationFrame(frame); sdk.event('game_over', { score }); draw(); };
+  const loop = () => { if (!running) return; x += direction * speed(); if (x <= 24 || x + width >= 696) direction *= -1; flash = Math.max(0, flash - .05); draw(); frame = requestAnimationFrame(loop); };
+  const restart = () => { cancelAnimationFrame(frame); running = false; score = 0; x = 110; direction = 1; width = 230; placed = []; flash = 0; onScore(0); draw(); };
   const start = () => { restart(); running = true; sdk.rememberPlay(); sdk.event('game_start'); frame = requestAnimationFrame(loop); };
-  const drop = () => {
-    if (!running) return;
-    sdk.firstAction();
-    const base = placed.at(-1) || { x: 245, width: 230, y: 652 };
-    const left = Math.max(x, base.x), right = Math.min(x + width, base.x + base.width), overlap = right - left;
-    if (overlap < 16 || nextY() < 115) return gameOver();
-    width = overlap; x = left; placed.push({ x: left, y: nextY(), width }); score += 1; onScore(score); sdk.event('game_score', { score });
-    x = Math.max(24, Math.min(696 - width, x)); direction *= -1; draw();
-  };
-  const keydown = (event) => { if (event.code === 'Space' || event.code === 'Enter') { event.preventDefault(); drop(); } };
-  canvas.addEventListener('pointerdown', drop); window.addEventListener('keydown', keydown); draw();
-  return { start, restart, destroy() { running = false; cancelAnimationFrame(frame); canvas.removeEventListener('pointerdown', drop); window.removeEventListener('keydown', keydown); } };
+  const drop = () => { if (!running) return; sdk.firstAction(); const base = placed.at(-1) || { x: 245, width: 230, y: 652 }; const left = Math.max(x, base.x), right = Math.min(x + width, base.x + base.width), overlap = right - left; if (overlap < 16 || nextY() < 115) return gameOver(); width = overlap; x = left; placed.push({ x: left, y: nextY(), width }); score++; flash = 1; onScore(score); sdk.event('game_score', { score }); x = Math.max(24, Math.min(696 - width, x)); direction *= -1; draw(); };
+  const keydown = event => { if (event.code === 'Space' || event.code === 'Enter') { event.preventDefault(); drop(); } }; canvas.addEventListener('pointerdown', drop); window.addEventListener('keydown', keydown); draw(); return { start, restart, destroy() { running = false; cancelAnimationFrame(frame); canvas.removeEventListener('pointerdown', drop); window.removeEventListener('keydown', keydown); } };
 }
