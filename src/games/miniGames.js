@@ -13,7 +13,7 @@ export function mountGame({ container, sdk, game, onScore }) {
   const [type, instruction] = miniGameConfigs[game.slug] || ['quiz', '정답을 골라 점수를 얻기'];
   let score = 0, running = false, timer = 0, selected = null, resource = 0, level = 1;
   const updateScore = (value) => { score = value; onScore(score); sdk.event('game_score', { score }); };
-  const shell = (content) => { container.innerHTML = `<div class="mini-game mini-${type}"><p class="mini-game-instruction">${instruction}</p>${content}</div>`; };
+  const shell = (content) => { container.innerHTML = `<div class="mini-game mini-${type}" data-game="${game.slug}"><header><span>${type.toUpperCase()}</span><b>${game.title}</b></header><p class="mini-game-instruction">${instruction}</p>${content}</div>`; };
   const stop = () => { running = false; window.clearInterval(timer); };
   const gameOver = () => { stop(); sdk.event('game_over', { score }); const note = container.querySelector('.mini-game-note'); if (note) note.textContent = `Game over · Score ${score}`; };
   const randomQuiz = () => {
